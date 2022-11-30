@@ -1,0 +1,11 @@
+s_no,cgpa,interactive,practical_knowledge,communication_skill,job_offer
+1,>=9,yes,very_good,good,yes
+2,>=8,no,good,moderate,yes
+3,>=9,no,average,poor,no
+4,<8,no,average,good,no
+5,>=8,yes,good,moderate,yes
+6,>=9,yes,good,moderate,yes
+7,<8,yes,good,poor,no
+8,>=9,no,very_good,good,yes
+9,>=8,yes,good,good,yes
+10,>=8,yes,average,good,yes
