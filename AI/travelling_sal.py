@@ -8,7 +8,7 @@ def travellingSalesmanProblem(graph, s):
     for i in range(V):
         if i != s:
             vertex.append(i)
-
+    print(vertex)
     min_path = maxsize
     next_permutation = permutations(vertex)
     for i in next_permutation:
