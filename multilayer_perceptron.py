@@ -12,7 +12,7 @@ class mlp():
         self.learning_rate = learning_rate
 
     def multilayer_perceptron(self, epoches):
-        while epoches > 0:
+        while epoches:
             activation_node_5 = np.dot(self.inputs, self.weights[0]) + self.bias[0]
             activation_node_6 = np.dot(self.inputs, self.weights[1]) + self.bias[1]
 

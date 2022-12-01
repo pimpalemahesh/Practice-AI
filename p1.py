@@ -178,7 +178,7 @@
 #                     self.likelihoods[feature].update(
 #                         {feature_value+"_"+class_value: 0})
 #                     self.class_priors.update({class_value: 0})
-            
+
 #         self._class_probability()
 #         self._likelihood_probability()
 #         self._prior_probability()
@@ -200,7 +200,7 @@
 
 #                 posterior = likelihood * prior / evidence
 #                 prob_outcomes[class_value] = posterior
-            
+
 #             result = max(prob_outcomes, key = lambda x : prob_outcomes[x])
 #             results.append(result)
 #         return np.array(results)
@@ -290,7 +290,7 @@
 #             self.weights[1][i] += self.learning_rate * error6 * self.inputs[i]
 
 #     def predict(self, input):
-        
+
 #         activation_node_5 = np.dot(input, self.weights[0]) + self.bias[0]
 #         activation_node_6 = np.dot(input, self.weights[1]) + self.bias[1]
 
@@ -317,3 +317,169 @@
 # perceptron.multilayer_perceptron(10)
 # print("\nWeights after model training : ", perceptron.weights)
 # print(perceptron.predict([1, 1, 0, 1]))
+
+
+# <----------------------------------------------------------------------------------------------------------->
+
+# Simple Regression
+# import numpy as np
+# from statistics import mean
+# from sklearn.model_selection import train_test_split
+
+# class simple_regression():
+
+#     def __init__(self):
+#         self.a1 = 0
+#         self.a2 = 0
+
+#     def fit(self, X, y):
+#         self.input = np.array(X)
+#         self.output = np.array(y)
+#         self.a1 = (mean(self.input*self.output) - mean(self.input)*mean(self.output)) / (mean(self.input**2) - mean(self.input)**2)
+#         self.a0 = mean(self.output) - self.a1*mean(self.input)
+
+#     def predict(self, X):
+#         return [self.a1*x + self.a0 for x in X]
+
+#     def r_square(self, y_output, y_predict):
+#         RSS = sum((y - mean(y_predict))**2 for y in y_output)
+#         TSS = sum((y1 - y2)**2 for y1,y2 in zip(y_output, y_predict))
+#         return 1 - RSS/TSS
+
+#     def mean_square_error(self, y_output, y_predicted):
+#         return sum((y1-y2)**2 for y1, y2 in zip(y_output, y_predicted))/len(y_output)
+
+# X = [1, 2, 3, 4, 5]
+# y = [1.2, 1.8, 2.6, 3.2, 3.8]
+
+# sr = simple_regression()
+# sr.fit(X,y)
+
+# predict = sr.predict(X)
+# print(predict)
+
+# print("Mean square Error ", sr.mean_square_error(y, predict))
+
+
+# Logistic Regression
+# import numpy as np
+# from statistics import mean
+# import math
+# class Logistic_Regression():
+
+#     def __init__(self):
+#         self.a0 = 0
+#         self.a1 = 0
+
+#     def fit(self, X, y):
+#         self.input = np.array(X)
+#         self.output = np.array(y)
+
+#         self.a1 = (mean(self.input*self.output) - mean(self.input)*mean(self.output)) / (mean(self.input**2) - mean(self.input)**2)
+#         self.a0 = mean(self.output) - self.a1*mean(self.input)
+
+#     def predict(self, X, value = 0.5):
+#         return [self._signmoid(x, value) for x in X]
+
+#     def r_squared(self, y_output, y_predicted):
+#         TSS = sum((y - mean(y_output))**2 for y in y_output)
+#         RSS = sum((y1-y2)**2 for y1,y2 in zip(y_output, y_predicted))
+#         return 1 - RSS/TSS
+
+#     def mean_squared_error(self, y_output, y_predicted):
+#         return sum((y1-y2)**2 for y1, y2 in zip(y_output, y_predicted))/len(y_output)
+
+#     def _signmoid(self, x, value):
+#         return 1 if (1 / (1 + math.exp(-(x*self.a1 + self.a0)))) >= value else 0
+
+# input = np.array([0.5, 1.0, 1.25, 2.5, 3.0, 1.75, 4.0, 4.25, 4.75, 5.0])
+# output = np.array([0,0,0,0,0,1,1,1,1,1])
+
+# lr = Logistic_Regression()
+# ot = lr.fit(input, output)
+# predicted = lr.predict(input, 0.6)
+# print(predicted)
+# print(lr.r_squared(output, predicted))
+# print(lr.mean_squared_error(output, predicted))
+
+
+# Multiple Linear Regression
+# import numpy as np
+
+# class multiple_linear_regression():
+
+#     def __init__(self):
+#         self.theta = []
+
+#     def fit(self, X, y):
+#         self.input = np.array(X)
+#         self.output = np.array(y)
+
+#         new_matrix = np.insert(X, 0, 1, axis=1)
+#         self.theta = np.matmul(np.matmul(np.linalg.pinv(np.matmul(np.transpose(new_matrix), new_matrix)), np.transpose(new_matrix)), y)
+#         print(self.theta)
+
+#     def predict(self, X):
+#         return [round(self.theta[0] + self.theta[1]*x[0] + self.theta[2]*x[1]) for x in X]
+
+# inputs = [[1,2],[2,3],[3,1],[4,5],[5,4],[6,3],[7,6],[8,4],[9,8]]
+# outputs = [3,4,6,8,10,11,12,15,16]
+
+# mlr = multiple_linear_regression()
+# mlr.fit(inputs, outputs)
+# output_predicted = mlr.predict(inputs)
+# print(output_predicted)
+
+
+# Polynomial Regression
+import numpy as np
+from sklearn.model_selection import train_test_split
+import math
+
+class polynomial_regression():
+
+    def __init__(self):
+        self.input = []
+        self.output = []
+        self.weight = [math.inf,math.inf,math.inf]
+        self.n = 1
+
+    def fit(self, X, y, n=1):
+        self.input = X
+        self.output = y
+        self.n = n
+
+        for i in range(len(self.input)):
+            input_matrix = [[0]*3 for j in range(3)]
+            input_matrix[0][0] = self.n
+            input_matrix[0][1] = self.input[i]
+            input_matrix[0][2] = self.input[i]**2
+            input_matrix[1][0] = self.input[i]
+            input_matrix[1][1] = self.input[i]**2
+            input_matrix[1][2] = self.input[i]**3
+            input_matrix[2][0] = self.input[i]**2
+            input_matrix[2][1] = self.input[i]**3
+            input_matrix[2][2] = self.input[i]**4
+
+            output_matrix = [0, 0, 0]
+            output_matrix[0] = self.output[i]
+            output_matrix[1] = self.input[i]**2
+            output_matrix[2] = self.input[i]**3
+
+            weight = np.dot(np.linalg.pinv(input_matrix), output_matrix)
+            if(self.weight[0] > weight[0]):
+                self.weight = weight
+
+    def predict(self, X):
+        return [round((self.weight[0] + self.weight[1]*x + self.weight[2]*x**2)*10) for x in X]
+
+
+X = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+y = [1, 4, 9, 15, 23, 35, 46, 62, 75, 97]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1)
+pr = polynomial_regression()
+pr.fit(X_train, y_train)
+predicted = pr.predict(X_test)
+print("Output : " , y_test)
+print("Predicted output : ", predicted)
